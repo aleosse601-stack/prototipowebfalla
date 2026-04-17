@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Falla Pobla del Duc Benipeixcar</title>
+    <style>
+      :root {
+        --blue: #2f7df6;
+        --blue-dark: #155ad4;
+        --blue-soft: #eaf3ff;
+        --ink: #10233f;
+        --muted: #6f7f97;
+        --line: #d8e6ff;
+        --card: rgba(255,255,255,.9);
+        --bg: #f6f9ff;
+        --shadow: 0 18px 45px rgba(25, 74, 163, 0.12);
+        --radius: 24px;
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, #d9e9ff 0, transparent 32%),
+          radial-gradient(circle at bottom right, #e7f0ff 0, transparent 30%),
+          var(--bg);
+      }
+
+      .shell {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 26px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: 24px;
+        align-items: stretch;
+      }
+
+      .panel {
+        background: var(--card);
+        border: 1px solid rgba(47,125,246,.15);
+        border-radius: 32px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+      }
+
+      .hero-copy {
+        padding: 28px;
+        min-height: 310px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: var(--blue-dark);
+        font-weight: 700;
+        letter-spacing: .02em;
+      }
+
+      h1 {
+        margin: 18px 0 10px;
+        font-size: clamp(2rem, 4vw, 3.7rem);
+        line-height: 1.04;
+      }
+
+      .subtitle {
+        font-size: 1.06rem;
+        line-height: 1.6;
+        color: var(--muted);
+        max-width: 60ch;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 16px;
+        padding: 13px 18px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .btn.primary { background: linear-gradient(135deg, var(--blue), var(--blue-dark)); color: white; }
+      .btn.secondary { background: white; color: var(--blue-dark); border: 1px solid var(--line); }
+
+      .hero-side {
+        padding: 22px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .logo-card {
+        display: grid;
+        place-items: center;
+        border-radius: 24px;
+        background: linear-gradient(180deg, white, #edf5ff);
+        border: 1px solid var(--line);
+        min-height: 210px;
+        overflow: hidden;
+      }
+
+      .logo-card img {
+        max-height: 200px;
+        width: auto;
+        filter: drop-shadow(0 10px 24px rgba(47,125,246,.18));
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .stat {
+        padding: 16px;
+        border-radius: 20px;
+        background: white;
+        border: 1px solid var(--line);
+      }
+
+      .stat small { display: block; color: var(--muted); margin-bottom: 8px; }
+      .stat strong { font-size: 1.5rem; }
+
+      .toolbar {
+        margin-top: 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .segmented {
+        display: inline-flex;
+        padding: 6px;
+        gap: 6px;
+        border-radius: 18px;
+        background: rgba(47,125,246,.09);
+      }
+
+      .segmented button {
+        border: 0;
+        padding: 11px 14px;
+        border-radius: 14px;
+        background: transparent;
+        color: var(--blue-dark);
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .segmented button.active {
+        background: white;
+        box-shadow: 0 8px 18px rgba(22, 90, 212, .12);
+      }
+
+      .screen {
+        margin-top: 18px;
+        display: none;
+      }
+      .screen.active { display: block; }
+
+      .app-grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 22px;
+      }
+
+      .sidebar {
+        padding: 18px;
+        position: sticky;
+        top: 18px;
+        height: fit-content;
+      }
+
+      .sidebar h3 { margin: 0 0 14px; }
+      .menu { display: grid; gap: 10px; }
+      .menu-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 15px;
+        border-radius: 18px;
+        background: white;
+        border: 1px solid var(--line);
+        font-weight: 700;
+      }
+      .menu-item.active { background: linear-gradient(135deg, #f1f7ff, white); color: var(--blue-dark); }
+      .chip {
+        font-size: .75rem;
+        padding: 6px 9px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: var(--blue-dark);
+      }
+
+      .content { display: grid; gap: 18px; }
+
+      .section {
+        padding: 22px;
+      }
+
+      .section-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+      .section-title h2, .section-title h3 { margin: 0; }
+      .section-title p { margin: 6px 0 0; color: var(--muted); }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0,1fr));
+        gap: 16px;
+      }
+
+      .mini-card {
+        background: linear-gradient(180deg, white, #f8fbff);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 18px;
+      }
+
+      .mini-card strong { display: block; font-size: 1.2rem; margin-top: 6px; }
+      .muted { color: var(--muted); }
+
+      .calendar {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 10px;
+      }
+
+      .day {
+        min-height: 115px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        padding: 12px;
+        background: white;
+      }
+      .day .num { font-weight: 800; margin-bottom: 8px; }
+      .event {
+        margin-top: 8px;
+        padding: 7px 9px;
+        border-radius: 12px;
+        background: var(--blue-soft);
+        color: var(--blue-dark);
+        font-size: .82rem;
+        font-weight: 700;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+      .list-item {
+        padding: 15px 16px;
+        border-radius: 18px;
+        border: 1px solid var(--line);
+        background: white;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .wallet {
+        display: grid;
+        grid-template-columns: 1.1fr .9fr;
+        gap: 16px;
+      }
+
+      .balance {
+        padding: 22px;
+        border-radius: 26px;
+        background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+        color: white;
+      }
+      .balance strong { font-size: 2.6rem; display: block; margin-top: 8px; }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 18px;
+      }
+      th, td {
+        text-align: left;
+        padding: 13px 14px;
+        border-bottom: 1px solid var(--line);
+        background: white;
+      }
+      th { color: var(--blue-dark); background: #f6faff; }
+
+      .note {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-left: 5px solid var(--blue);
+        background: var(--blue-soft);
+        border-radius: 0 18px 18px 0;
+        color: var(--blue-dark);
+        font-weight: 600;
+      }
+
+      .footer {
+        text-align: center;
+        color: var(--muted);
+        padding: 30px 10px 8px;
+      }
+
+      @media (max-width: 1050px) {
+        .hero, .wallet, .app-grid, .cards, .stats { grid-template-columns: 1fr; }
+        .sidebar { position: static; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <div class="panel hero-copy">
+          <div class="brand">Prototipo visual </div>
+          <h1>FALLA POBLA DEL DUC BENIPEIXCAR</h1>
+          <p class="subtitle">
+            Propuesta visual 
+          </p>
+          <div class="actions">
+            <button class="btn primary" onclick="showScreen('fallero')">Ver vista fallero</button>
+            <button class="btn secondary" onclick="showScreen('admin')">Ver vista administración</button>
+          </div>
+          <div class="note">
+            Este prototipo es demostrativo: la parte visual sí está planteada como producto real, pero los datos siguen siendo de ejemplo para enseñarlo de forma clara.
+          </div>
+        </div>
+
+        <div class="panel hero-side">
+          <div class="logo-card">
+            <img src="data:image/png;base64,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[... ELLIPSIZATION ...]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" alt="Logo Falla Pobla del Duc Benipeixcar" />
+          </div>
+          <div class="stats">
+            <div class="stat"><small>Usuarios previstos</small><strong>+180</strong></div>
+            <div class="stat"><small>Eventos anuales</small><strong>40</strong></div>
+            <div class="stat"><small>Formularios activos</small><strong>6</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <div>
+          <h2 style="margin:0;">Demostración de interfaz</h2>
+          <p class="muted" style="margin:6px 0 0;">Puedes enseñar ambas vistas como si fuese una app real.</p>
+        </div>
+        <div class="segmented">
+          <button id="btn-fallero" class="active" onclick="showScreen('fallero')">Modo fallero</button>
+          <button id="btn-admin" onclick="showScreen('admin')">Modo administración</button>
+        </div>
+      </div>
+
+      <section id="screen-fallero" class="screen active">
+        <div class="app-grid">
+          <aside class="panel sidebar">
+            <h3>Menú fallero</h3>
+            <div class="menu">
+              <div class="menu-item active">Inicio <span class="chip">Hoy</span></div>
+              <div class="menu-item">Calendario <span class="chip">4 eventos</span></div>
+              <div class="menu-item">Formularios <span class="chip">2 nuevos</span></div>
+              <div class="menu-item">Monedero <span class="chip">17 €</span></div>
+              <div class="menu-item">Comunicados</div>
+              <div class="menu-item">Perfil</div>
+            </div>
+          </aside>
+
+          <div class="content">
+            <section class="panel section">
+              <div class="section-title">
+                <div>
+                  <h2>Bienvenido, Alejandro</h2>
+                  <p>Resumen rápido de la actividad de la falla.</p>
+                </div>
+                <span class="chip">Fallero</span>
+              </div>
+              <div class="cards">
+                <div class="mini-card"><span class="muted">Próximo acto</span><strong>Cena del casal · viernes 21:30</strong></div>
+                <div class="mini-card"><span class="muted">Formularios pendientes</span><strong>2 por responder</strong></div>
+                <div class="mini-card"><span class="muted">Saldo actual</span><strong>17 €</strong></div>
+              </div>
+            </section>
+
+            <section class="panel section">
+              <div class="section-title">
+                <div>
+                  <h3>Calendario del mes</h3>
+                  <p>Vista rápida de actos y fechas destacadas.</p>
+                </div>
+              </div>
+              <div class="calendar">
+                <div class="day"><div class="num">1</div></div>
+                <div class="day"><div class="num">2</div></div>
+                <div class="day"><div class="num">3</div><div class="event">Reunión comisión</div></div>
+                <div class="day"><div class="num">4</div></div>
+                <div class="day"><div class="num">5</div></div>
+                <div class="day"><div class="num">6</div><div class="event">Ensayo playback</div></div>
+                <div class="day"><div class="num">7</div></div>
+                <div class="day"><div class="num">8</div></div>
+                <div class="day"><div class="num">9</div></div>
+                <div class="day"><div class="num">10</div><div class="event">Cena casal</div></div>
+                <div class="day"><div class="num">11</div></div>
+                <div class="day"><div class="num">12</div><div class="event">Recogida camisetas</div></div>
+                <div class="day"><div class="num">13</div></div>
+              </div>
+            </section>
+
+            <section class="wallet">
+              <div class="panel section">
+                <div class="section-title">
+                  <div>
+                    <h3>Formularios activos</h3>
+                    <p>Ejemplo de formularios que el fallero puede completar.</p>
+                  </div>
+                </div>
+                <div class="list">
+                  <div class="list-item"><div><strong>Asistencia a la cena del sábado</strong><div class="muted">Fecha límite: 12 de mayo</div></div><span class="chip">Responder</span></div>
+                  <div class="list-item"><div><strong>Talla de camiseta de casal</strong><div class="muted">Fecha límite: 15 de mayo</div></div><span class="chip">Abierto</span></div>
+                  <div class="list-item"><div><strong>Inscripción excursión de verano</strong><div class="muted">Plazas limitadas</div></div><span class="chip">Nuevo</span></div>
+                </div>
+              </div>
+
+              <div class="panel section">
+                <div class="section-title">
+                  <div>
+                    <h3>Monedero interno</h3>
+                    <p>Control interno, sin pagos reales.</p>
+                  </div>
+                </div>
+                <div class="balance">
+                  Saldo disponible
+                  <strong>17 €</strong>
+                  <div style="opacity:.9;">Última actualización: hoy, 18:24</div>
+                </div>
+                <table style="margin-top:14px;">
+                  <thead>
+                    <tr><th>Concepto</th><th>Movimiento</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Recarga manual</td><td>+20 €</td></tr>
+                    <tr><td>Bebida en barra</td><td>-3 €</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel section">
+              <div class="section-title">
+                <div>
+                  <h3>Comunicados</h3>
+                  <p>Mensajes visibles para todos los falleros.</p>
+                </div>
+              </div>
+              <div class="list">
+                <div class="list-item"><div><strong>Cambio de hora de la reunión general</strong><div class="muted">Pasa a las 20:30 en el casal.</div></div><span class="chip">Nuevo</span></div>
+                <div class="list-item"><div><strong>Recordatorio de inscripción</strong><div class="muted">La excursión cierra plazas este viernes.</div></div><span class="chip">Aviso</span></div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-admin" class="screen">
+        <div class="app-grid">
+          <aside class="panel sidebar">
+            <h3>Menú administración</h3>
+            <div class="menu">
+              <div class="menu-item active">Panel general <span class="chip">Admin</span></div>
+              <div class="menu-item">Eventos</div>
+              <div class="menu-item">Formularios</div>
+              <div class="menu-item">Comunicados</div>
+              <div class="menu-item">Monederos</div>
+              <div class="menu-item">Usuarios</div>
+            </div>
+          </aside>
+
+          <div class="content">
+            <section class="panel section">
+              <div class="section-title">
+                <div>
+                  <h2>Panel de administración</h2>
+                  <p>Ejemplo de gestión centralizada para la directiva.</p>
+                </div>
+                <span class="chip">Administrador</span>
+              </div>
+              <div class="cards">
+                <div class="mini-card"><span class="muted">Eventos este mes</span><strong>12</strong></div>
+                <div class="mini-card"><span class="muted">Formularios abiertos</span><strong>6</strong></div>
+                <div class="mini-card"><span class="muted">Usuarios activos</span><strong>184</strong></div>
+              </div>
+            </section>
+
+            <section class="panel section">
+              <div class="section-title">
+                <div>
+                  <h3>Herramientas rápidas</h3>
+                  <p>Acciones que la administración podría hacer desde la app.</p>
+                </div>
+              </div>
+              <div class="cards">
+                <div class="mini-card"><span class="muted">Crear evento</span><strong>+ Añadir al calendario</strong></div>
+                <div class="mini-card"><span class="muted">Crear formulario</span><strong>+ Nueva inscripción</strong></div>
+                <div class="mini-card"><span class="muted">Publicar comunicado</span><strong>+ Aviso a la comisión</strong></div>
+              </div>
+            </section>
+
+            <section class="panel section">
+              <div class="section-title">
+                <div>
+                  <h3>Gestión de monederos</h3>
+                  <p>Ejemplo de control interno de saldo por fallero.</p>
+                </div>
+              </div>
+              <table>
+                <thead>
+                  <tr><th>Fallero</th><th>Saldo</th><th>Último movimiento</th><th>Acción</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Alejandro Osseiran</td><td>17 €</td><td>Bebida en barra · -3 €</td><td>Modificar</td></tr>
+                  <tr><td>María Torres</td><td>28 €</td><td>Recarga manual · +10 €</td><td>Modificar</td></tr>
+                  <tr><td>Jordi Ferrer</td><td>5 €</td><td>Cena casal · -8 €</td><td>Modificar</td></tr>
+                </tbody>
+              </table>
+            </section>
+
+            <section class="wallet">
+              <div class="panel section">
+                <div class="section-title">
+                  <div>
+                    <h3>Próximos eventos a publicar</h3>
+                    <p>Modelo de planificación desde administración.</p>
+                  </div>
+                </div>
+                <div class="list">
+                  <div class="list-item"><div><strong>Reunión general de comisión</strong><div class="muted">Martes · 20:30 · Casal</div></div><span class="chip">Editar</span></div>
+                  <div class="list-item"><div><strong>Presentación infantil</strong><div class="muted">Sábado · 18:00 · Teatro</div></div><span class="chip">Editar</span></div>
+                  <div class="list-item"><div><strong>Excursión a la playa</strong><div class="muted">Domingo · 09:00</div></div><span class="chip">Editar</span></div>
+                </div>
+              </div>
+
+              <div class="panel section">
+                <div class="section-title">
+                  <div>
+                    <h3>Actividad reciente</h3>
+                    <p>Registro de acciones administrativas.</p>
+                  </div>
+                </div>
+                <div class="list">
+                  <div class="list-item"><div><strong>Formulario creado</strong><div class="muted">"Asistencia cena julio"</div></div><span class="chip">Hace 12 min</span></div>
+                  <div class="list-item"><div><strong>Comunicado publicado</strong><div class="muted">Cambio de horario de ensayo</div></div><span class="chip">Hace 35 min</span></div>
+                  <div class="list-item"><div><strong>Monedero actualizado</strong><div class="muted">Alejandro Osseiran · +20 €</div></div><span class="chip">Hace 1 h</span></div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">Prototipo visual · Falla Pobla del Duc Benipeixcar</div>
+    </div>
+
+    <script>
+      function showScreen(mode) {
+        document.getElementById('screen-fallero').classList.toggle('active', mode === 'fallero');
+        document.getElementById('screen-admin').classList.toggle('active', mode === 'admin');
+        document.getElementById('btn-fallero').classList.toggle('active', mode === 'fallero');
+        document.getElementById('btn-admin').classList.toggle('active', mode === 'admin');
+      }
+    </script>
+  </body>
+</html>
